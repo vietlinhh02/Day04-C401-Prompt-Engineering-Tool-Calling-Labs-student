@@ -16,6 +16,9 @@ from .social_search.tool import search_tweets
 from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .calculator.tool import calculate
+from .time_now.tool import time_now
+from .text_summarizer.tool import text_summarizer
+from .weather_mock.tool import weather_mock
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
@@ -35,6 +38,9 @@ TOOL_FUNCTIONS = {
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
     "calculator": calculate,
+    "time_now": time_now,
+    "text_summarizer": text_summarizer,
+    "weather_mock": weather_mock,
 }
 
 

@@ -3,5 +3,173 @@
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_time_now_utc_single",
+      "phase": "B",
+      "query": "Bây giờ là mấy giờ (UTC)?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "time_now",
+            "args": { "tz": "utc" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Routing to time_now and extracting tz=utc." }
+    },
+    {
+      "id": "G02_weather_mock_city_single",
+      "phase": "B",
+      "query": "Thời tiết ở Hà Nội hôm nay thế nào?",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather_mock",
+            "args": { "city": "Hà Nội", "day": "today", "units": "C" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Routing to mock weather tool and extracting city + day=today." }
+    },
+    {
+      "id": "G03_text_summarizer_single",
+      "phase": "B",
+      "query": "Tóm tắt đoạn sau trong 2 câu: AI đang thay đổi quy trình làm việc. Nhiều team dùng agent để tự động hóa nghiên cứu. Nhưng cần kiểm soát rủi ro và bảo mật.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "text_summarizer",
+            "args": { "max_sentences": 2 }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Routing to local summarizer and extracting max_sentences=2." }
+    },
+    {
+      "id": "G04_send_requires_confirmation_single",
+      "phase": "B",
+      "query": "Gửi câu này lên Telegram: 'Hello team, daily digest đã sẵn sàng.'",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": { "response_type": "yes_no" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Write action boundary: must clarify yes/no before send." }
+    },
+    {
+      "id": "G05_format_digest_single",
+      "phase": "B",
+      "query": "Format giúp mình 2 item tin tức thành bản tin bullet.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format",
+            "args": { "template": "bullets" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Routing to format tool and selecting template=bullets." }
+    },
+
+    {
+      "id": "G06_multiturn_weather_then_units",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Xem thời tiết ở Tokyo" },
+        { "role": "user", "content": "Ngày mai nhé" },
+        { "role": "user", "content": "Đổi sang độ F" }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather_mock",
+            "args": { "city": "Tokyo", "day": "tomorrow", "units": "F" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Carry over city, update day and units across turns." }
+    },
+    {
+      "id": "G07_multiturn_missing_city_clarify",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Thời tiết hôm nay sao?" },
+        { "role": "user", "content": "Ở Đà Nẵng" }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": { "response_type": "text" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Must clarify missing city first (don’t guess), before calling weather_mock." }
+    },
+    {
+      "id": "G08_multiturn_time_then_format",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Lấy timestamp UTC hiện tại" },
+        { "role": "user", "content": "Format timestamp theo iso" }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "time_now",
+            "args": { "tz": "utc", "fmt": "iso" }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Multi-turn: latest turn still calls time_now with tz=utc and fmt=iso." }
+    },
+    {
+      "id": "G09_multiturn_summarize_then_shorter",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Tóm tắt đoạn sau: Đây là câu 1. Đây là câu 2. Đây là câu 3. Đây là câu 4." },
+        { "role": "user", "content": "Rút còn 1 câu thôi" }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "text_summarizer",
+            "args": { "max_sentences": 1 }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "Multi-turn correction: adjust max_sentences to 1 based on latest turn." }
+    },
+    {
+      "id": "G10_multiturn_send_confirm_flow",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Gửi lên Telegram: 'Bản tin hôm nay có 3 link.'" },
+        { "role": "user", "content": "OK gửi đi" }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": { "confirmed": true }
+          }
+        ]
+      },
+      "metadata": { "what_it_tests": "After explicit confirmation, tool should call send with confirmed=true." }
+    }
+  ]
 }
