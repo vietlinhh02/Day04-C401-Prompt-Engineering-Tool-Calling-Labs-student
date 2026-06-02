@@ -98,7 +98,7 @@ tools:
         max_results:
           {
             type: integer,
-            default: 5,
+            default: 10,
             description: "Number of results to return",
           }
       required: [query]
