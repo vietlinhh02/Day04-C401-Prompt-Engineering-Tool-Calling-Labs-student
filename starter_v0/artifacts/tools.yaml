@@ -137,3 +137,30 @@ tools:
         timeframe: {type: string, enum: [all, year, month, week, day, hour], default: "all", description: "Time range to search"}
         content_type: {type: string, enum: [posts, comments, both], default: "posts", description: "What to search: posts, comments, or both"}
       required: [query]
+
+  - name: summarize
+    description: "Summarize long text by extracting the most important sentences. Use when the user wants a shorter version of an article or document."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Text to summarize"}
+        max_sentences: {type: integer, default: 5, description: "Maximum number of sentences in summary (1-10)"}
+      required: [text]
+
+  - name: translate
+    description: "Translate text between languages. Use when the user wants to translate content. Supports common language codes: en, vi, ja, ko, zh, fr, de, es, etc."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Text to translate (max 500 chars)"}
+        source_lang: {type: string, default: "auto", description: "Source language code (auto for auto-detect)"}
+        target_lang: {type: string, default: "en", description: "Target language code (e.g. en, vi, ja, ko)"}
+      required: [text, target_lang]
+
+  - name: sentiment
+    description: "Analyze sentiment of text. Returns sentiment (positive/negative/neutral), confidence score, and matched positive/negative words. Works for English and Vietnamese."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Text to analyze"}
+      required: [text]

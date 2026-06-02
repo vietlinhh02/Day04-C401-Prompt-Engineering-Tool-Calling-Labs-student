@@ -5,8 +5,6 @@ from typing import Any
 
 import yaml
 
-# Folder names are intentionally vague to match the tool names students see.
-# The imported function names are the underlying implementations (unchanged).
 from .clarify.tool import ask_user
 from .papers.tool import arxiv_search
 from .paper_text.tool import get_arxiv_paper_text
@@ -19,13 +17,10 @@ from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .rss.tool import fetch_rss
 from .reddit.tool import search_reddit
+from .summarize.tool import summarize_text
+from .translate.tool import translate_text
+from .sentiment.tool import analyze_sentiment
 
-
-# NOTE (starter_v0): tool names here are intentionally vague. These keys are the
-# names the model sees AND the names data/eval_base.json + data/eval_research_extension.json
-# match against. If a team renames a tool, it MUST stay in sync across ALL of:
-#   artifacts/tools.yaml  ->  this dict  ->  data/eval_base.json + data/eval_research_extension.json
-# Otherwise the eval raises "not declared in tools.yaml" or scores every call as a name mismatch.
 TOOL_FUNCTIONS = {
     "clarify": ask_user,
     "timeline": get_user_tweets,
@@ -39,6 +34,9 @@ TOOL_FUNCTIONS = {
     "paper_text": get_arxiv_paper_text,
     "rss": fetch_rss,
     "reddit": search_reddit,
+    "summarize": summarize_text,
+    "translate": translate_text,
+    "sentiment": analyze_sentiment,
 }
 
 
@@ -55,4 +53,3 @@ def to_openai_tools(declarations: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "parameters": item.get("parameters", {"type": "object", "properties": {}}),
         },
     } for item in declarations]
-

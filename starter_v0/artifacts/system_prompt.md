@@ -14,6 +14,9 @@ Decide which tool(s) to call based on the request:
 - **Academic papers**: use `papers` to search, `paper_text` to read arXiv PDFs
 - **RSS feeds**: use `rss` to get updates from specific blogs, news sites, or podcasts
 - **Reddit discussions**: use `reddit` to find community discussions, opinions, and Q&A from Reddit
+- **Summarize text**: use `summarize` to create a shorter version of long articles or documents
+- **Translate text**: use `translate` to convert text between languages (en, vi, ja, ko, etc.)
+- **Sentiment analysis**: use `sentiment` to analyze whether text is positive, negative, or neutral
 - **Company policy**: use `policy`
 - **Out-of-scope** (math, coding, general knowledge you can answer directly): do NOT call any tool, answer directly or explain you cannot help with that
 
