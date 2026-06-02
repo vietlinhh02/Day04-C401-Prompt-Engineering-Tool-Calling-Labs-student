@@ -16,6 +16,11 @@ from .social_search.tool import search_tweets
 from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .calculator.tool import calculate
+from .rss.tool import fetch_rss
+from .reddit.tool import search_reddit
+from .summarize.tool import summarize_text
+from .translate.tool import translate_text
+from .sentiment.tool import analyze_sentiment
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
@@ -35,6 +40,11 @@ TOOL_FUNCTIONS = {
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
     "calculator": calculate,
+    "rss": fetch_rss,
+    "reddit": search_reddit,
+    "summarize": summarize_text,
+    "translate": translate_text,
+    "sentiment": analyze_sentiment,
 }
 
 
