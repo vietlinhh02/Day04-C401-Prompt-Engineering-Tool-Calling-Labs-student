@@ -19,6 +19,11 @@ from .calculator.tool import calculate
 from .time_now.tool import time_now
 from .text_summarizer.tool import text_summarizer
 from .weather_mock.tool import weather_mock
+from .rss.tool import fetch_rss
+from .reddit.tool import search_reddit
+from .summarize.tool import summarize_text
+from .translate.tool import translate_text
+from .sentiment.tool import analyze_sentiment
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
@@ -41,6 +46,11 @@ TOOL_FUNCTIONS = {
     "time_now": time_now,
     "text_summarizer": text_summarizer,
     "weather_mock": weather_mock,
+    "rss": fetch_rss,
+    "reddit": search_reddit,
+    "summarize": summarize_text,
+    "translate": translate_text,
+    "sentiment": analyze_sentiment,
 }
 
 
