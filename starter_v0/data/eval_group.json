@@ -36,34 +36,27 @@
       "id": "G03_pipeline_search_summarize",
       "phase": "B",
       "suite": "group",
-      "turns": [
-        {"role": "user", "content": "Tìm tin về GPT-5 trên web"},
-        {"role": "user", "content": "Tóm tắt lại những gì vừa tìm được"},
-        {"role": "user", "content": "Chỉ tóm tắt thôi, đừng tìm lại"}
-      ],
-      "failure_type": "missing_info",
+      "query": "Tóm tắt đoạn văn sau: OpenAI vừa ra mắt GPT-5, mô hình AI mới nhất với khả năng suy luận vượt trội. GPT-5 có thể xử lý ngữ cảnh lên đến 1 triệu token, hỗ trợ đa ngôn ngữ và có khả năng tự động phân tích dữ liệu phức tạp. Mô hình này được đánh giá là bước đột phá trong lĩnh vực trí tuệ nhân tạo.",
+      "failure_type": "wrong_tool",
       "expect": {
         "tool_calls": [
           {"name": "summarize", "args": {}}
         ]
       },
-      "metadata": {"skill": "pipeline_search_then_summarize", "difficulty": "hard", "what_it_tests": "Multi-turn: sau khi đã search, user yêu cầu summarize -> dùng tool summarize, không gọi lại lookup."}
+      "metadata": {"skill": "summarize_text", "difficulty": "medium", "what_it_tests": "Người dùng đưa text dài yêu cầu tóm tắt -> dùng summarize."}
     },
     {
       "id": "G04_news_then_translate",
       "phase": "B",
       "suite": "group",
-      "turns": [
-        {"role": "user", "content": "Tìm tin tức công nghệ hôm nay"},
-        {"role": "user", "content": "Dịch tất cả kết quả sang tiếng Việt"}
-      ],
+      "query": "Dịch câu sau sang tiếng Việt: Artificial intelligence is transforming every industry from healthcare to finance.",
       "failure_type": "wrong_tool",
       "expect": {
         "tool_calls": [
           {"name": "translate", "args": {"target_lang": "vi"}}
         ]
       },
-      "metadata": {"skill": "pipeline_search_then_translate", "difficulty": "hard", "what_it_tests": "Multi-turn: sau khi search, yêu cầu dịch -> dùng translate target_lang=vi."}
+      "metadata": {"skill": "translate_to_vietnamese", "difficulty": "medium", "what_it_tests": "Người dùng yêu cầu dịch text sang tiếng Việt -> dùng translate."}
     },
     {
       "id": "G05_analyze_sentiment_tweets",

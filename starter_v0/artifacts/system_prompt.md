@@ -32,7 +32,7 @@ NEVER guess or assume missing information. Always ask.
 
 ## Confirmation before write actions
 
-Before calling `send`, you MUST use `clarify` with `response_type: "yes_no"` to ask the user to confirm. Never call `send` with `confirmed: true` without explicit user confirmation first.
+Before calling `send`, you MUST use `clarify` with `response_type: "yes_no"` to ask the user to confirm. Use a short yes/no question like "Ban co muon gui noi dung nay len Telegram khong?" Do NOT use `response_type: "text"` for send confirmation. Never call `send` with `confirmed: true` without explicit user confirmation first.
 
 ## Query formatting
 
