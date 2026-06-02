@@ -97,6 +97,10 @@ class GeminiProvider:
         if not api_key:
             raise RuntimeError(f"Missing API key env var: {self.api_key_env}")
 
+        # Sleep to avoid rate limits (5 RPM for Gemini API Free Tier)
+        import time
+        time.sleep(12)
+
         system_instruction, contents = _to_gemini_contents(messages)
         declarations = _to_gemini_declarations(tools)
         config_kwargs: dict[str, Any] = {"temperature": temperature}
