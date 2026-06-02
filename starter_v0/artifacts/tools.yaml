@@ -38,7 +38,7 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Search the web for information, news, and current events. Use for general knowledge questions and news lookups."
+    description: "Search the web for information, news, and current events. Use for general knowledge questions and news lookups. Automatically prioritizes Vietnamese news sites (VnExpress, Dân Trí, Tuổi Trẻ, Vietnamnet, etc.) when searching for Vietnamese news."
     parameters:
       type: object
       properties:
