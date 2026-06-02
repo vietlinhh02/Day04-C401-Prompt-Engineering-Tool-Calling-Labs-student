@@ -247,6 +247,35 @@ tools:
           }
       required: [expression]
 
+  - name: time_now
+    description: "Return the current time (local or UTC). Use when the user asks for the current time or a timestamp."
+    parameters:
+      type: object
+      properties:
+        tz: { type: string, enum: [local, utc], default: "local", description: "Timezone: local or utc" }
+        fmt: { type: string, default: "iso", description: "Output format: 'iso' or a strftime format string." }
+      required: []
+
+  - name: text_summarizer
+    description: "Summarize provided text locally (no web fetching). Use when the user pastes text and asks for a short summary."
+    parameters:
+      type: object
+      properties:
+        text: { type: string, default: "", description: "Text to summarize" }
+        max_sentences: { type: integer, default: 3, description: "Max sentences in summary" }
+        max_chars: { type: integer, default: 600, description: "Max characters in summary" }
+      required: [text]
+
+  - name: weather_mock
+    description: "Mock weather lookup (no external API). Useful for routing and argument extraction tests."
+    parameters:
+      type: object
+      properties:
+        city: { type: string, default: "", description: "City name (required)" }
+        day: { type: string, enum: [today, tomorrow], default: "today", description: "Forecast day" }
+        units: { type: string, enum: [C, F], default: "C", description: "Temperature units" }
+      required: [city]
+
   - name: rss
     description: "Fetch and parse an RSS/Atom feed from a URL. Use when the user wants to monitor a specific blog, news site, or podcast that provides an RSS feed."
     parameters:

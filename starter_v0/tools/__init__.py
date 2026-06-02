@@ -16,6 +16,9 @@ from .social_search.tool import search_tweets
 from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .calculator.tool import calculate
+from .time_now.tool import time_now
+from .text_summarizer.tool import text_summarizer
+from .weather_mock.tool import weather_mock
 from .rss.tool import fetch_rss
 from .reddit.tool import search_reddit
 from .summarize.tool import summarize_text
@@ -40,6 +43,9 @@ TOOL_FUNCTIONS = {
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
     "calculator": calculate,
+    "time_now": time_now,
+    "text_summarizer": text_summarizer,
+    "weather_mock": weather_mock,
     "rss": fetch_rss,
     "reddit": search_reddit,
     "summarize": summarize_text,
