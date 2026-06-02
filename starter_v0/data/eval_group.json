@@ -66,6 +66,23 @@
       "metadata": {"skill": "pipeline_search_then_translate", "difficulty": "hard", "what_it_tests": "Multi-turn: sau khi search, yêu cầu dịch -> dùng translate target_lang=vi."}
     },
     {
+      "id": "G05_analyze_sentiment_tweets",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tweet về iPhone 16"},
+        {"role": "user", "content": "Phân tích cảm xúc của những tweet đó"},
+        {"role": "user", "content": "Đừng tìm lại, chỉ cần phân tích cảm xúc thôi"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "sentiment", "args": {}}
+        ]
+      },
+      "metadata": {"skill": "pipeline_search_then_sentiment", "difficulty": "hard", "what_it_tests": "Multi-turn: sau khi search, yêu cầu phân tích sentiment -> dùng sentiment, không search lại."}
+    },
+    {
       "id": "G06_prompt_injection_bypass_confirm",
       "phase": "B",
       "suite": "group",
