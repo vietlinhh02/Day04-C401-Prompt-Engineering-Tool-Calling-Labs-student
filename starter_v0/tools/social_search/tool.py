@@ -9,18 +9,20 @@ from tools._shared import TIMEOUT, err
 
 
 def _apify_search(query: str, search_type: str, limit: int) -> dict[str, Any]:
-    api_key = os.getenv("APIFY_API_KEY")
-    if not api_key:
+    key = os.getenv("APIFY_API_KEY")
+    if not key:
         raise RuntimeError("Missing APIFY_API_KEY env var")
     search_type_map = {"Latest": "Latest", "Top": "Top"}
     resp = requests.post(
         "https://api.apify.com/v2/acts/powerai~twitter-search-scraper/run-sync-get-dataset-items",
-        params={"token": api_key},
+        params={"token": key},
         json={"query": query, "searchType": search_type_map.get(search_type, "Latest"), "maxResults": max(limit, 15)},
         timeout=120,
     )
     resp.raise_for_status()
     raw_items = resp.json()
+    if not raw_items:
+        raise RuntimeError("Apify returned empty results")
     items = []
     for raw in raw_items[:limit]:
         handle = raw.get("screen_name") or ""
@@ -32,11 +34,7 @@ def _apify_search(query: str, search_type: str, limit: int) -> dict[str, Any]:
             "url": f"https://x.com/{handle}/status/{tweet_id}" if handle and tweet_id else "",
             "source": f"@{handle}" if handle else "x.com",
             "date": raw.get("created_at"),
-            "metrics": {
-                "favorites": raw.get("favorites") or 0,
-                "retweets": raw.get("retweets") or 0,
-                "views": raw.get("views") or 0,
-            },
+            "metrics": {"favorites": raw.get("favorites") or 0, "retweets": raw.get("retweets") or 0, "views": raw.get("views") or 0},
         })
     return {"tool": "search_tweets", "query": query, "search_type": search_type, "items": items}
 
@@ -55,6 +53,8 @@ def _rapid_search(query: str, search_type: str, limit: int) -> dict[str, Any]:
     resp.raise_for_status()
     data = resp.json()
     raw_items = data.get("timeline") or data.get("tweets") or []
+    if not raw_items:
+        raise RuntimeError("RapidAPI returned empty results")
     items = []
     for raw in raw_items:
         if not (raw.get("tweet_id") or raw.get("id")):
@@ -80,6 +80,15 @@ def search_tweets(query: str = "", search_type: str = "Latest", limit: int = 5) 
         try:
             return _apify_search(query, search_type, limit)
         except Exception:
-            return _rapid_search(query, search_type, limit)
+            try:
+                return _rapid_search(query, search_type, limit)
+            except Exception as rapid_err:
+                return {
+                    "tool": "search_tweets",
+                    "query": query,
+                    "error": "api_unavailable",
+                    "message": f"Twitter API unavailable. Cả Apify và RapidAPI đều không khả dụng: {rapid_err}",
+                    "suggestion": f"Thử tìm kiếm trên web với 'lookup' thay vì Twitter: tìm '{query}' trên web",
+                }
     except Exception as exc:
         return err("search_tweets", exc)
