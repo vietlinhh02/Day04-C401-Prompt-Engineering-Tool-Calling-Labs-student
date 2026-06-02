@@ -114,7 +114,7 @@ st.title("🔍 Research Agent")
 # Sidebar config
 with st.sidebar:
     st.header("Config")
-    provider_name = st.selectbox("Provider", PROVIDERS)
+    provider_name = st.selectbox("Provider", PROVIDERS, index=4)
     version = st.selectbox("Version", VERSIONS)
     model = st.text_input("Model (optional)", placeholder="default")
     max_rounds = st.slider("Max tool rounds", 1, 8, 4)
