@@ -6,8 +6,8 @@
 
 ## Team
 
-- Team: [điền tên nhóm]
-- Members: [điền tên thành viên]
+- Team: Nhóm 10 - Team 5
+- Members: Nguyễn Viết Linh, Nguyễn Thái Học, Nguyễn Đình Tiến Mạnh
 - Provider/model: OpenCode / deepseek-v4-flash
 
 ---
@@ -20,7 +20,7 @@ Research agent: tìm kiếm tin tức trên web và mạng xã hội (Twitter/X)
 
 **Link dùng thử (deploy):**
 
-URL: https://cursor-chances-isp-powers.trycloudflare.com/
+URL:https://bit.ly/4vioJ4E
 
 ## A2. Tool agent có
 
