@@ -20,7 +20,7 @@ Research agent: tìm kiếm tin tức trên web và mạng xã hội (Twitter/X)
 
 **Link dùng thử (deploy):**
 
-URL:https://bit.ly/4vioJ4E
+URL:https://bit.ly/4u8BPjS
 
 ## A2. Tool agent có
 
